@@ -16,10 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from AppConsulta.views import home  # Importa la vista home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('consultas/', include('AppConsulta.urls')),  # Rutas de `AppConsulta`
-    path('', home),  # Ruta para el path raíz 
+    path('', include('AppConsulta.urls')),  # Redirige la raíz a las rutas de AppConsulta
 ]
