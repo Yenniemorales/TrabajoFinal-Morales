@@ -4,7 +4,8 @@ from .models import Consulta
 from django.http import HttpResponse
 from django.shortcuts import render  # Importa la función render para renderizar plantillas
 from .models import Paciente, Medico, Consulta  # Importa los modelos utilizados en esta vista
-
+from datetime import datetime
+import pytz 
 # Vista para la página de inicio
 def home(request):
     # Cuenta el total de pacientes registrados en la base de datos
@@ -50,15 +51,33 @@ def agregar_medico(request):
     return render(request, 'AppConsulta/agregar_medico.html', {'form': form})
 
 #Creo vista para agregar consulta
+# Vista para agregar consulta
 def agregar_consulta(request):
     if request.method == 'POST':
         form = ConsultaForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('agregar_consulta')
+            consulta = form.save(commit=False)
+            
+            # Obtener la fecha de consulta del formulario
+            fecha_consulta = form.cleaned_data['fecha_consulta']
+            
+            # Si la fecha solo tiene el formato de fecha (sin hora), la convertimos a datetime
+            if isinstance(fecha_consulta, datetime.date):
+                # Combinamos la fecha con la hora mínima (00:00:00)
+                fecha_consulta = datetime.combine(fecha_consulta, datetime.min.time())
+                
+                # Si es necesario, agregar la zona horaria
+                timezone = pytz.timezone('America/New_York')  # Cambia a la zona horaria deseada
+                fecha_consulta = timezone.localize(fecha_consulta)  # Convertir a aware datetime
+
+            consulta.fecha_consulta = fecha_consulta
+            consulta.save()  # Guardamos la consulta con la fecha correctamente procesada
+            
+            return redirect('agregar_consulta')  # Redirige después de guardar
     else:
         form = ConsultaForm()
     return render(request, 'AppConsulta/agregar_consulta.html', {'form': form})
+
 
 #Creo vista para buscar consulta
 def buscar_consulta(request):
