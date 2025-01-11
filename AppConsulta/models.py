@@ -1,44 +1,58 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from datetime import datetime
 
-# Creo clase para modelo paciente 
+# Modelo para la clase Paciente
 class Paciente(models.Model):
-    nombre = models.CharField(max_length=30, help_text="Nombre del paciente")  # Campo de texto para el nombre
-    apellido = models.CharField(max_length=30, help_text="Apellido del paciente")  # Campo de texto para el apellido
-    fecha_nacimiento = models.DateField(help_text="Fecha de nacimiento (AAAA-MM-DD)")  # Campo para la fecha de nacimiento
-    email = models.EmailField(help_text="Correo electrónico del paciente")  # Campo para el email
+    nombre = models.CharField(max_length=30, help_text="Nombre del paciente")  # Nombre del paciente
+    apellido = models.CharField(max_length=30, help_text="Apellido del paciente")  # Apellido del paciente
+    fecha_nacimiento = models.DateField(help_text="Fecha de nacimiento (AAAA-MM-DD)")  # Fecha de nacimiento
+    email = models.EmailField(help_text="Correo electrónico del paciente")  # Email del paciente
 
     def __str__(self):
+        # Retorna una representación amigable del paciente
         return f"{self.nombre} {self.apellido}"
 
-# Creo clase para modelo medico
+
+# Modelo para la clase Médico
 class Medico(models.Model):
-    nombre = models.CharField(max_length=30, help_text="Nombre del médico")  # Campo de texto para el nombre
-    apellido = models.CharField(max_length=30, help_text="Apellido del médico")  # Campo de texto para el apellido
-    especialidad = models.CharField(max_length=30, help_text="Especialidad del médico")  # Campo de texto para la especialidad
-    email = models.EmailField(help_text="Correo electrónico del médico")  # Campo para el email
+    nombre = models.CharField(max_length=30, help_text="Nombre del médico")  # Nombre del médico
+    apellido = models.CharField(max_length=30, help_text="Apellido del médico")  # Apellido del médico
+    especialidad = models.CharField(max_length=30, help_text="Especialidad del médico")  # Especialidad
+    email = models.EmailField(help_text="Correo electrónico del médico")  # Email del médico
 
     def __str__(self):
+        # Retorna una representación amigable del médico
         return f"Dr./Dra. {self.nombre} {self.apellido} ({self.especialidad})"
 
-# Creo clase para modelo consulta
+
+# Modelo para la clase Consulta
 class Consulta(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, help_text="Paciente relacionado con la consulta")  # Relación con Paciente
-    medico = models.ForeignKey(Medico, on_delete=models.CASCADE, help_text="Médico relacionado con la consulta")  # Relación con Médico
-    fecha_consulta = models.DateTimeField(help_text="Fecha y hora de la consulta")  # Campo para la fecha y hora de la consulta
-    motivo = models.TextField(help_text="Motivo de la consulta")  # Campo para el motivo
+    paciente = models.ForeignKey(
+        Paciente,
+        on_delete=models.CASCADE,
+        help_text="Paciente relacionado con la consulta"
+    )  # Relación con el modelo Paciente
+    medico = models.ForeignKey(
+        Medico,
+        on_delete=models.CASCADE,
+        help_text="Médico relacionado con la consulta"
+    )  # Relación con el modelo Médico
+    fecha_consulta = models.DateTimeField(
+        help_text="Fecha y hora de la consulta"
+    )  # Fecha y hora de la consulta
+    motivo = models.TextField(help_text="Motivo de la consulta")  # Motivo de la consulta
 
-    def __str__(self):
-        return f"Consulta de {self.paciente} con {self.medico} el {self.fecha_consulta.strftime('%d/%m/%Y')}"
-
-    # Validación personalizada para fecha_consulta
     def clean(self):
-        from django.core.exceptions import ValidationError
-        from datetime import datetime
-
-        if self.fecha_consulta > datetime.now():
+        """
+        Validación personalizada para asegurarse de que la fecha de la consulta
+        no esté en el futuro.
+        """
+        # Verifica que la fecha de consulta no sea nula
+        if self.fecha_consulta and self.fecha_consulta > datetime.now():
+            # Lanza un error si la fecha es futura
             raise ValidationError("La fecha de la consulta no puede ser futura.")
 
-
     def __str__(self):
-        return f"Consulta de {self.paciente} con {self.medico}"
-
+        # Representación amigable de la consulta
+        return f"Consulta de {self.paciente} con {self.medico} el {self.fecha_consulta.strftime('%d/%m/%Y')}"

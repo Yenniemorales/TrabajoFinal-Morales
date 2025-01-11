@@ -1,16 +1,51 @@
 {% extends 'AppConsulta/base.html' %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="mb-4">Buscar Consultas</h2>
-        <form method="get" class="d-flex mb-4">
-            <input type="text" name="q" class="form-control me-2" placeholder="Buscar por motivo" required>
+<div class="container mt-4">
+    <!-- Contenedor principal con margen superior -->
+    <h2 class="mb-4">Buscar Consulta</h2>
+    <!-- Encabezado principal de la página -->
+    <form method="get" class="row g-3 needs-validation" novalidate>
+        <!-- Formulario configurado para búsqueda con diseño responsivo -->
+        <div class="col-md-12">
+            <!-- Contenedor para el campo de búsqueda -->
+            <label for="id_busqueda" class="form-label">Buscar por Motivo</label>
+            <!-- Etiqueta para el campo de búsqueda con estilo Bootstrap -->
+            <input type="text" class="form-control" id="id_busqueda" name="q" placeholder="Ingrese un motivo">
+            <!-- Campo de entrada para búsqueda con estilo y placeholder -->
+        </div>
+        <div class="col-12">
+            <!-- Contenedor para el botón de búsqueda -->
             <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+            <!-- Botón para realizar la búsqueda con estilo destacado de Bootstrap -->
+        </div>
+    </form>
+
+    <div class="mt-4">
+        <!-- Contenedor para mostrar resultados -->
+        <h3>Resultados de la Búsqueda</h3>
+        {% if consultas %}
         <ul class="list-group">
+            <!-- Lista de resultados si hay consultas disponibles -->
             {% for consulta in consultas %}
-                <li class="list-group-item">{{ consulta }}</li>
+            <li class="list-group-item">
+                Paciente: {{ consulta.paciente }}<br>
+                Médico: {{ consulta.medico }}<br>
+                Fecha: {{ consulta.fecha }}<br>
+                Motivo: {{ consulta.motivo }}
+            </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p>No se encontraron resultados.</p>
+        <!-- Mensaje si no hay resultados -->
+        {% endif %}
     </div>
+
+    <div class="mt-3">
+        <!-- Botón para volver a la página principal -->
+        <a href="/" class="btn btn-secondary">Inicio</a>
+        <!-- Enlace con estilo de botón de Bootstrap para volver a la página principal -->
+    </div>
+</div>
 {% endblock %}

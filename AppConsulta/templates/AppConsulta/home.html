@@ -1,0 +1,84 @@
+{% extends 'AppConsulta/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Contenedor principal con márgenes superiores -->
+    <h1 class="text-center">Bienvenido a la Gestión de Consultas Médicas</h1>
+    <!-- Encabezado principal centrado con un mensaje de bienvenida -->
+    <p class="text-center">Gestiona pacientes, médicos y consultas de manera eficiente.</p>
+    <!-- Descripción breve de la funcionalidad de la aplicación -->
+
+    <div class="text-center mt-4">
+        <!-- Sección de accesos rápidos con botones -->
+        <a href="{% url 'agregar_paciente' %}" class="btn btn-primary m-2">Agregar Paciente</a>
+        <!-- Botón para redirigir a la funcionalidad de agregar paciente -->
+        <a href="{% url 'agregar_medico' %}" class="btn btn-primary m-2">Agregar Médico</a>
+        <!-- Botón para redirigir a la funcionalidad de agregar médico -->
+        <a href="{% url 'agregar_consulta' %}" class="btn btn-primary m-2">Agregar Consulta</a>
+        <!-- Botón para redirigir a la funcionalidad de agregar consulta -->
+        <a href="{% url 'buscar_consulta' %}" class="btn btn-primary m-2">Buscar Consultas</a>
+        <!-- Botón para redirigir a la funcionalidad de búsqueda de consultas -->
+    </div>
+
+    <div class="row mt-5">
+        <!-- Sección para mostrar estadísticas rápidas en tarjetas -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pacientes Registrados</h5>
+                    <!-- Título de la tarjeta -->
+                    <p class="card-text">{{ total_pacientes }}</p>
+                    <!-- Mostrar el número total de pacientes registrados -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Médicos Registrados</h5>
+                    <!-- Título de la tarjeta -->
+                    <p class="card-text">{{ total_medicos }}</p>
+                    <!-- Mostrar el número total de médicos registrados -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Consultas Agendadas</h5>
+                    <!-- Título de la tarjeta -->
+                    <p class="card-text">{{ total_consultas }}</p>
+                    <!-- Mostrar el número total de consultas agendadas -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-5">Últimos Registros</h3>
+    <!-- Encabezado para la tabla de últimos registros -->
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <!-- Columna para el nombre del registro -->
+                <th>Apellido</th>
+                <!-- Columna para el apellido del registro -->
+                <th>Fecha de Registro</th>
+                <!-- Columna para la fecha de registro -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pacientes_recientes %}
+            <tr>
+                <td>{{ paciente.nombre }}</td>
+                <!-- Mostrar el nombre del paciente -->
+                <td>{{ paciente.apellido }}</td>
+                <!-- Mostrar el apellido del paciente -->
+                <td>{{ paciente.fecha_registro }}</td>
+                <!-- Mostrar la fecha de registro del paciente -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
