@@ -1,14 +1,16 @@
-{% extends 'consultas/base.html' %}
+{% extends 'AppConsulta/base.html' %}
 
 {% block content %}
-    <h2>Buscar Consultas</h2>
-    <form method="get">
-        <input type="text" name="q" placeholder="Buscar motivo">
-        <button type="submit">Buscar</button>
-    </form>
-    <ul>
-        {% for consulta in consultas %}
-            <li>{{ consulta }}</li>
-        {% endfor %}
-    </ul>
+    <div class="container mt-5">
+        <h2 class="mb-4">Buscar Consultas</h2>
+        <form method="get" class="d-flex mb-4">
+            <input type="text" name="q" class="form-control me-2" placeholder="Buscar por motivo" required>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        <ul class="list-group">
+            {% for consulta in consultas %}
+                <li class="list-group-item">{{ consulta }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

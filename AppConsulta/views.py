@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 #Creo vista para home(inicio)
 def home(request):
-    return HttpResponse("¡Bienvenido a la página de inicio!")
+    return HttpResponse("\u00a1Bienvenido a la p\u00e1gina de inicio!")
 
 
 #Creo vista para agregar paciente

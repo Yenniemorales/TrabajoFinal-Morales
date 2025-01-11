@@ -21,5 +21,5 @@ from AppConsulta.views import home  # Importa la vista home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('consultas/', include('AppConsulta.urls')),  # Rutas de `AppConsulta`
-    path('', home),  # Ruta para el path raíz - Página de inicio
+    path('', home),  # Ruta para el path raíz 
 ]
