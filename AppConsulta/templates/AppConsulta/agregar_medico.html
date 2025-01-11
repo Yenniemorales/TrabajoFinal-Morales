@@ -2,11 +2,33 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Agregar Médico</h2>
-    <form method="post">
+    <h2 class="mb-4">Agregar Médico</h2>
+    <form method="post" class="row g-3 needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary mt-2">Guardar</button>
+        <!-- Campo: Nombre -->
+        <div class="col-md-6">
+            <label for="id_nombre" class="form-label">Nombre</label>
+            {{ form.nombre }}
+        </div>
+        <!-- Campo: Apellido -->
+        <div class="col-md-6">
+            <label for="id_apellido" class="form-label">Apellido</label>
+            {{ form.apellido }}
+        </div>
+        <!-- Campo: Especialidad -->
+        <div class="col-md-6">
+            <label for="id_especialidad" class="form-label">Especialidad</label>
+            {{ form.especialidad }}
+        </div>
+        <!-- Campo: Email -->
+        <div class="col-md-6">
+            <label for="id_email" class="form-label">Correo Electrónico</label>
+            {{ form.email }}
+        </div>
+        <!-- Botón Guardar -->
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
     </form>
 </div>
 {% endblock %}

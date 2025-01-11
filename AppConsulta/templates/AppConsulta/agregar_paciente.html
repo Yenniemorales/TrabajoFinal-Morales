@@ -5,7 +5,32 @@
     <h2 class="mb-4">Agregar Paciente</h2>
     <form method="post" class="row g-3 needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        <!-- Campo: Nombre -->
+        <div class="col-md-6">
+            <label for="id_nombre" class="form-label">Nombre</label>
+            {{ form.nombre }}
+        </div>
+        <!-- Campo: Apellido -->
+        <div class="col-md-6">
+            <label for="id_apellido" class="form-label">Apellido</label>
+            {{ form.apellido }}
+        </div>
+        <!-- Campo: Fecha de Nacimiento -->
+        <div class="col-md-6">
+            <label for="id_fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+            {{ form.fecha_nacimiento }}
+        </div>
+        <!-- Campo: Edad -->
+        <div class="col-md-6">
+            <label for="id_edad" class="form-label">Edad</label>
+            {{ form.edad }}
+        </div>
+        <!-- Campo: Email -->
+        <div class="col-md-6">
+            <label for="id_email" class="form-label">Correo Electrónico</label>
+            {{ form.email }}
+        </div>
+        <!-- Botón Guardar -->
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>

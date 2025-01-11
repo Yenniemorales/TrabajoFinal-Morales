@@ -1,14 +1,34 @@
 {% extends 'AppConsulta/base.html' %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="mb-4">Agregar Consulta</h2>
-        <form method="post" class="needs-validation" novalidate>
-            {% csrf_token %}
-            <div class="mb-3">
-                {{ form.as_p }}
-            </div>
+<div class="container mt-4">
+    <h2 class="mb-4">Agregar Consulta</h2>
+    <form method="post" class="row g-3 needs-validation" novalidate>
+        {% csrf_token %}
+        <!-- Campo: Paciente -->
+        <div class="col-md-6">
+            <label for="id_paciente" class="form-label">Paciente</label>
+            {{ form.paciente }}
+        </div>
+        <!-- Campo: Médico -->
+        <div class="col-md-6">
+            <label for="id_medico" class="form-label">Médico</label>
+            {{ form.medico }}
+        </div>
+        <!-- Campo: Fecha de Consulta -->
+        <div class="col-md-6">
+            <label for="id_fecha" class="form-label">Fecha de Consulta</label>
+            {{ form.fecha }}
+        </div>
+        <!-- Campo: Motivo de Consulta -->
+        <div class="col-md-12">
+            <label for="id_motivo" class="form-label">Motivo de Consulta</label>
+            {{ form.motivo }}
+        </div>
+        <!-- Botón Guardar -->
+        <div class="col-12">
             <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 {% endblock %}
