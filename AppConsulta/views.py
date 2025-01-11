@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from .forms import PacienteForm, MedicoForm, ConsultaForm
 from .models import Consulta
 from django.http import HttpResponse
-
+from django.shortcuts import render
 #Creo vista para home(inicio)
+
 def home(request):
-    return HttpResponse("\u00a1Bienvenido a la p\u00e1gina de inicio!")
+    return render(request, 'AppConsulta/base.html')  # Redirige a la base.html para pruebas iniciales
 
 
 #Creo vista para agregar paciente
@@ -25,9 +26,9 @@ def agregar_medico(request):
         form = MedicoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('agregar_medico')
+            return redirect('agregar_medico')  # Redirige a la misma página para nuevas entradas
     else:
-        form = MedicoForm()
+        form = MedicoForm()  # Formulario vacío para GET
     return render(request, 'AppConsulta/agregar_medico.html', {'form': form})
 
 #Creo vista para agregar consulta

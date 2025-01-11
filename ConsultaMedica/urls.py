@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('AppConsulta.urls')),  # Redirige la raíz a las rutas de AppConsulta
+    path('', include('AppConsulta.urls')),  # Incluye las rutas de AppConsulta
 ]
