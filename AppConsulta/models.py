@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from datetime import datetime
+from django.utils import timezone
+from django.utils.timezone import make_aware
 
 # Modelo para la clase Paciente
 class Paciente(models.Model):
@@ -48,10 +49,17 @@ class Consulta(models.Model):
         Validación personalizada para asegurarse de que la fecha de la consulta
         no esté en el futuro.
         """
-        # Verifica que la fecha de consulta no sea nula
-        if self.fecha_consulta and self.fecha_consulta > datetime.now():
-            # Lanza un error si la fecha es futura
-            raise ValidationError("La fecha de la consulta no puede ser futura.")
+        if self.fecha_consulta:
+            # Asegúrate de que la fecha sea "aware"
+            fecha_consulta_aware = (
+                self.fecha_consulta
+                if timezone.is_aware(self.fecha_consulta)
+                else make_aware(self.fecha_consulta)
+            )
+
+            # Compara con timezone.now()
+            if fecha_consulta_aware > timezone.now():
+                raise ValidationError("La fecha de la consulta no puede ser futura.")
 
     def __str__(self):
         # Representación amigable de la consulta
