@@ -7,22 +7,26 @@ class PacienteForm(forms.ModelForm):
         model = Paciente  # Asociamos este formulario al modelo Paciente
         fields = '__all__'  # Incluir todos los campos del modelo
 
-        # Perzonalizo los widgets para añadir estilos de Bootstrap
+        # Personalizo los widgets para añadir estilos de Bootstrap
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre del paciente'}),
             'edad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la edad'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico'}),
         }
 
-# Creo formulario de Medico
+# Creo formulario de Médico
 class MedicoForm(forms.ModelForm):
     class Meta:
-        model = Medico  # Asociamos este formulario al modelo Medico
+        model = Medico  # Asociamos este formulario al modelo Médico
         fields = '__all__'  # Incluir todos los campos del modelo
 
-        # Perzonalizo los widgets para añadir estilos de Bootstrap
+        # Personalizo los widgets para añadir estilos de Bootstrap
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre del médico'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el apellido del médico'}),
             'especialidad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la especialidad'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico'}),
         }
 
 # Creo formulario de Consulta
@@ -31,8 +35,10 @@ class ConsultaForm(forms.ModelForm):
         model = Consulta  # Asociamos este formulario al modelo Consulta
         fields = '__all__'  # Incluir todos los campos del modelo
 
-        # Perzonalizo los widgets para añadir estilos de Bootstrap
+        # Personalizo los widgets para añadir estilos de Bootstrap
         widgets = {
+            'paciente': forms.Select(attrs={'class': 'form-select'}),
+            'medico': forms.Select(attrs={'class': 'form-select'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'motivo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el motivo de la consulta'}),
+            'motivo': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese el motivo de la consulta'}),
         }
