@@ -3,20 +3,20 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Contenedor principal con márgenes superiores -->
-    <h1 class="text-center">Bienvenido a la Gestión de Consultas Médicas</h1>
+    <h1 class="text-center fs-1">Bienvenido a la Gestión de Consultas Médicas</h1>
     <!-- Encabezado principal centrado con un mensaje de bienvenida -->
-    <p class="text-center">Gestiona pacientes, médicos y consultas de manera eficiente.</p>
+    <p class="text-center fs-3">Gestiona pacientes, médicos y consultas médicas.</p>
     <!-- Descripción breve de la funcionalidad de la aplicación -->
 
     <div class="text-center mt-4">
         <!-- Sección de accesos rápidos con botones -->
-        <a href="{% url 'agregar_paciente' %}" class="btn btn-primary m-2">Agregar Paciente</a>
+        <a href="{% url 'agregar_paciente' %}" class="btn btn-primary m-2 fs-4">Agregar Paciente</a>
         <!-- Botón para redirigir a la funcionalidad de agregar paciente -->
-        <a href="{% url 'agregar_medico' %}" class="btn btn-primary m-2">Agregar Médico</a>
+        <a href="{% url 'agregar_medico' %}" class="btn btn-primary m-2 fs-4">Agregar Médico</a>
         <!-- Botón para redirigir a la funcionalidad de agregar médico -->
-        <a href="{% url 'agregar_consulta' %}" class="btn btn-primary m-2">Agregar Consulta</a>
+        <a href="{% url 'agregar_consulta' %}" class="btn btn-primary m-2 fs-4">Agregar Consulta</a>
         <!-- Botón para redirigir a la funcionalidad de agregar consulta -->
-        <a href="{% url 'buscar_consulta' %}" class="btn btn-primary m-2">Buscar Consultas</a>
+        <a href="{% url 'buscar_consulta' %}" class="btn btn-primary m-2 fs-4 ">Buscar Consultas</a>
         <!-- Botón para redirigir a la funcionalidad de búsqueda de consultas -->
     </div>
 
