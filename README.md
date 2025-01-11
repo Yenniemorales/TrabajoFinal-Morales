@@ -13,6 +13,31 @@ Proyecto simple desarrollado con **Django** y **Bootstrap** para gestionar pacie
 
 ---
 
+## Instalación y Configuración
+
+### 1. Clonar el repositorio
+Se clona el repositorio y navega al directorio del proyecto:
+```bash
+git clone https://github.com/Yenniemorales/TuPrimeraPagina-Morales.git
+cd TuPrimeraPagina-Morales
+```
+
+### 2. Creación el entorno virtual y activarlo
+Creación de un entorno virtual para instalar las dependencias necesarias y actívalo:
+```bash
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 3. Realización de las migraciones y ejecutar el servidor
+Se configura la base de datos realizando las migraciones y ejecuta el servidor para iniciar la aplicación:
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+---
+
 ## Pasos para Construir la Página
 
 ### 1. Creación de Modelos
