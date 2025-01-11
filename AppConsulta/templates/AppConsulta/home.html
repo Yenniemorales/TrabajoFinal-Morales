@@ -59,23 +59,29 @@
     <table class="table table-striped mt-3">
         <thead>
             <tr>
+                <th>Tipo</th>
+                <!-- Columna para mostrar si es Paciente o Médico -->
                 <th>Nombre</th>
                 <!-- Columna para el nombre del registro -->
                 <th>Apellido</th>
                 <!-- Columna para el apellido del registro -->
-                <th>Fecha de Registro</th>
-                <!-- Columna para la fecha de registro -->
+                <th>RUT</th>
+                <!-- Columna para el Rut del registro -->
+
             </tr>
         </thead>
         <tbody>
-            {% for paciente in pacientes_recientes %}
+            <!-- Cuerpo de la tabla con los últimos registros -->
+            {% for registro in registros_recientes %}
             <tr>
-                <td>{{ paciente.nombre }}</td>
-                <!-- Mostrar el nombre del paciente -->
-                <td>{{ paciente.apellido }}</td>
-                <!-- Mostrar el apellido del paciente -->
-                <td>{{ paciente.fecha_registro }}</td>
-                <!-- Mostrar la fecha de registro del paciente -->
+                <td>{{ registro.tipo }}</td>
+                <!-- Mostrar si es Paciente o Médico -->
+                <td>{{ registro.nombre }}</td>
+                <!-- Mostrar el nombre del registro -->
+                <td>{{ registro.apellido }}</td>
+                <!-- Mostrar el apellido del registro -->
+                <td>{{ registro.rut }}</td>
+                <!-- Mostrar el Rut del registro -->
             </tr>
             {% endfor %}
         </tbody>

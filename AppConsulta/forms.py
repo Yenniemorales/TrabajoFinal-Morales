@@ -32,20 +32,18 @@ class MedicoForm(forms.ModelForm):
 # Formulario de Consulta
 class ConsultaForm(forms.ModelForm):
     class Meta:
-        model = Consulta  # Asociamos este formulario al modelo Consulta
-        fields = '__all__'  # Incluir todos los campos del modelo
-
+        model = Consulta
+        fields = '__all__'
         # Personalizo los widgets para añadir estilos de Bootstrap
         widgets = {
             'paciente': forms.Select(attrs={'class': 'form-select'}),
             'medico': forms.Select(attrs={'class': 'form-select'}),
             'fecha_consulta': forms.DateInput(attrs={
-                'class': 'form-control', 
-                'type': 'date',  # Cambia a 'date' para mostrar solo el calendario
-                'placeholder': 'dd-mm-aaaa'  # Placeholder opcional
+                'class': 'form-control',
+                'type': 'date',  #muestra solo la fecha
             }),
             'motivo': forms.Textarea(attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': 'Ingrese el motivo de la consulta'
             }),
         }
