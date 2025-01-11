@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta Médica</title>
+</head>
+<body>
+    <header>
+        <h1>Consulta Médica</h1>
+        <nav>
+            <a href="{% url 'agregar_paciente' %}">Agregar Paciente</a>
+            <a href="{% url 'agregar_medico' %}">Agregar Médico</a>
+            <a href="{% url 'agregar_consulta' %}">Agregar Consulta</a>
+            <a href="{% url 'buscar_consulta' %}">Buscar Consulta</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

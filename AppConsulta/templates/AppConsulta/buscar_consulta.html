@@ -1,0 +1,14 @@
+{% extends 'consultas/base.html' %}
+
+{% block content %}
+    <h2>Buscar Consultas</h2>
+    <form method="get">
+        <input type="text" name="q" placeholder="Buscar motivo">
+        <button type="submit">Buscar</button>
+    </form>
+    <ul>
+        {% for consulta in consultas %}
+            <li>{{ consulta }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
