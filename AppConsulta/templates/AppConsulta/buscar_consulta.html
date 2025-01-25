@@ -7,10 +7,10 @@
 
     <!-- Formulario de búsqueda por RUT -->
     <form method="get" class="row g-3 needs-validation" novalidate>
-        <!-- Usamos GET para enviar el RUT como parámetro en la URL -->
+
         <div class="col-md-12">
             <!-- Etiqueta y campo de texto para RUT -->
-            <label for="id_rut" class="form-label">RUT del Paciente (Chile)</label>
+            <label for="id_rut" class="form-label">RUT del Paciente a Buscar</label>
             <input type="text" class="form-control" id="id_rut" name="rut" placeholder="Ej: 11111111-1 (sin puntos con guión)">
         </div>
         <div class="col-12">
@@ -22,13 +22,13 @@
     <div class="mt-4">
         <!-- Título para mostrar resultados de la búsqueda -->
         <h3>Resultados de la Búsqueda</h3>
-        <!-- Verifica si la variable 'consultas' trae resultados -->
+
         {% if consultas %}
             <ul class="list-group">
-                <!-- Recorre cada consulta en la lista -->
+
                 {% for consulta in consultas %}
                 <li class="list-group-item">
-                    <!-- Muestra información relevante de la consulta -->
+
                     <strong>Paciente:</strong> {{ consulta.paciente }}<br>
                     <strong>Médico:</strong> {{ consulta.medico }}<br>
                     <!-- Ajusta según el campo de fecha en tu modelo (ej: fecha_consulta) -->

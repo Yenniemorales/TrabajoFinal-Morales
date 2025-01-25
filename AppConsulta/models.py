@@ -35,6 +35,7 @@ class Consulta(models.Model):
         on_delete=models.CASCADE,
         help_text="Paciente relacionado con la consulta"
     )
+
     # El campo medico se relaciona con la clase Medico
     medico = models.ForeignKey(
         Medico,

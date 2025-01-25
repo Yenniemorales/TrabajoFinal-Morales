@@ -2,33 +2,23 @@
 
 {% block content %}
 <div class="container mt-5">
-    <!-- Contenedor principal con márgenes superiores -->
     <h1 class="text-center fs-1">Bienvenido a la Gestión de Consultas Médicas</h1>
-    <!-- Encabezado principal centrado con un mensaje de bienvenida -->
     <p class="text-center fs-3">Gestiona pacientes, médicos y consultas médicas.</p>
-    <!-- Descripción breve de la funcionalidad de la aplicación -->
 
     <div class="text-center mt-4">
-        <!-- Sección de accesos rápidos con botones -->
         <a href="{% url 'agregar_paciente' %}" class="btn btn-primary m-2 fs-4">Agregar Paciente</a>
-        <!-- Botón para redirigir a la funcionalidad de agregar paciente -->
         <a href="{% url 'agregar_medico' %}" class="btn btn-primary m-2 fs-4">Agregar Médico</a>
-        <!-- Botón para redirigir a la funcionalidad de agregar médico -->
         <a href="{% url 'agregar_consulta' %}" class="btn btn-primary m-2 fs-4">Agregar Consulta</a>
-        <!-- Botón para redirigir a la funcionalidad de agregar consulta -->
         <a href="{% url 'buscar_consulta' %}" class="btn btn-primary m-2 fs-4 ">Buscar Consultas</a>
-        <!-- Botón para redirigir a la funcionalidad de búsqueda de consultas -->
     </div>
 
+    <!-- Tarjetas de estadísticas en el inicio-->
     <div class="row mt-5">
-        <!-- Sección para mostrar estadísticas rápidas en tarjetas -->
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Pacientes Registrados</h5>
-                    <!-- Título de la tarjeta -->
                     <p class="card-text">{{ total_pacientes }}</p>
-                    <!-- Mostrar el número total de pacientes registrados -->
                 </div>
             </div>
         </div>
@@ -36,9 +26,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Médicos Registrados</h5>
-                    <!-- Título de la tarjeta -->
                     <p class="card-text">{{ total_medicos }}</p>
-                    <!-- Mostrar el número total de médicos registrados -->
                 </div>
             </div>
         </div>
@@ -46,45 +34,103 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Consultas Agendadas</h5>
-                    <!-- Título de la tarjeta -->
                     <p class="card-text">{{ total_consultas }}</p>
-                    <!-- Mostrar el número total de consultas agendadas -->
                 </div>
             </div>
         </div>
     </div>
 
-    <h3 class="mt-5">Últimos Registros</h3>
-    <!-- Encabezado para la tabla de últimos registros -->
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>Tipo</th>
-                <!-- Columna para mostrar si es Paciente o Médico -->
-                <th>Nombre</th>
-                <!-- Columna para el nombre del registro -->
-                <th>Apellido</th>
-                <!-- Columna para el apellido del registro -->
-                <th>RUT</th>
-                <!-- Columna para el Rut del registro -->
+    <!--Tablas-->
+    <div class="mt-5">
+        <!-- Tabla de Pacientes -->
+        <h3 class="mb-3">Pacientes</h3>
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>RUT</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paciente in pacientes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <!-- Usar índice del bucle -->
+                    <td>{{ paciente.nombre }}</td>
+                    <td>{{ paciente.apellido }}</td>
+                    <td>{{ paciente.rut }}</td>
+                    <td>{{ paciente.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_paciente' paciente.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Cuerpo de la tabla con los últimos registros -->
-            {% for registro in registros_recientes %}
-            <tr>
-                <td>{{ registro.tipo }}</td>
-                <!-- Mostrar si es Paciente o Médico -->
-                <td>{{ registro.nombre }}</td>
-                <!-- Mostrar el nombre del registro -->
-                <td>{{ registro.apellido }}</td>
-                <!-- Mostrar el apellido del registro -->
-                <td>{{ registro.rut }}</td>
-                <!-- Mostrar el Rut del registro -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <!-- Tabla de Médicos -->
+        <h3 class="mt-5 mb-3">Médicos</h3>
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Especialidad</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medico in medicos %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <!-- Usar índice del bucle -->
+                    <td>{{ medico.nombre }}</td>
+                    <td>{{ medico.apellido }}</td>
+                    <td>{{ medico.especialidad }}</td>
+                    <td>{{ medico.email }}</td>
+                    <td>
+                        <a href="{% url 'editar_medico' medico.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_medico' medico.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Tabla de Consultas -->
+        <h3 class="mt-5 mb-3">Consultas</h3>
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Paciente</th>
+                    <th>Médico</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for consulta in consultas %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <!-- Usar índice del bucle -->
+                    <td>{{ consulta.paciente.nombre }}</td>
+                    <td>{{ consulta.medico.nombre }}</td>
+                    <td>{{ consulta.fecha_consulta }}</td>
+                    <td>{{ consulta.motivo }}</td>
+                    <td>
+                        <a href="{% url 'editar_consulta' consulta.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_consulta' consulta.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

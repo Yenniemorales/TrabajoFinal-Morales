@@ -4,43 +4,53 @@
 <div class="container mt-4">
     <!-- Contenedor principal con margen superior -->
     <h2 class="mb-4">Agregar Consulta</h2>
+
+    <!-- Mensajes de alerta de guardado exitoso -->
+    {% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
     <!-- Encabezado principal de la página -->
     <form method="post" class="row g-3 needs-validation" novalidate>
         <!-- Formulario configurado para diseño responsivo con filas y columnas -->
         {% csrf_token %}
-        <!-- Token CSRF obligatorio para proteger contra ataques Cross-Site Request Forgery -->
         <div class="col-md-6">
             <!-- Contenedor para el campo Paciente -->
             <label for="id_paciente" class="form-label">Paciente</label>
-            <!-- Etiqueta para el campo Paciente con estilo Bootstrap -->
             {{ form.paciente }}
-            <!-- Campo de selección dinámico generado por el formulario de Django -->
         </div>
         <div class="col-md-6">
+
             <!-- Contenedor para el campo Médico -->
             <label for="id_medico" class="form-label">Médico</label>
-            <!-- Etiqueta para el campo Médico con estilo Bootstrap -->
             {{ form.medico }}
-            <!-- Campo de selección dinámico generado por el formulario de Django -->
         </div>
         <div class="col-md-6">
+
             <!-- Contenedor para el campo Fecha de Consulta -->
             <label for="id_fecha_consulta" class="form-label">Fecha de Consulta</label>
-            <!-- Etiqueta para el campo Fecha de Consulta con estilo Bootstrap -->
             {{ form.fecha_consulta }}
-            <!-- Campo de entrada para la Fecha de Consulta generado por el formulario de Django -->
+           
         </div>
         <div class="col-md-12">
+
             <!-- Contenedor para el campo Motivo de Consulta -->
             <label for="id_motivo" class="form-label">Motivo de Consulta</label>
-            <!-- Etiqueta para el campo Motivo de Consulta con estilo Bootstrap -->
+
             {{ form.motivo }}
-            <!-- Área de texto para el Motivo de Consulta generado por el formulario de Django -->
-        </div>
+           
         <div class="col-12">
-            <!-- Contenedor para el botón de envío -->
+            <!-- Botón de envío -->
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <!-- Botón para enviar el formulario con estilo destacado de Bootstrap -->
+
         </div>
     </form>
     <div class="mt-3">
