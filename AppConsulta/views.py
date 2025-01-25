@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PacienteForm, MedicoForm, ConsultaForm
 from .models import Paciente, Medico, Consulta
-from django.utils.timezone import is_naive, make_aware
-from pytz import timezone
-from django.contrib import messages  # Importa el sistema de mensajes
+from django.contrib import messages  # Sistema de mensajes
 from django.utils.timezone import now
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.views import LoginView, LogoutView
 
-# VISTA: home
+# VISTA: Home
+@login_required
 def home(request):
     total_pacientes = Paciente.objects.count()
     total_medicos = Medico.objects.count()
@@ -34,106 +37,110 @@ def home(request):
         'registros_recientes': registros_recientes,
     })
 
-
 # CRUD: Paciente
+@login_required
 def agregar_paciente(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Paciente guardado exitosamente.')  # Mensaje de éxito
+            messages.success(request, 'Paciente guardado exitosamente.')
             return redirect('agregar_paciente')
     else:
         form = PacienteForm()
 
     return render(request, 'AppConsulta/agregar_paciente.html', {'form': form})
 
+@login_required
 def editar_paciente(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     if request.method == 'POST':
         form = PacienteForm(request.POST, instance=paciente)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Paciente actualizado correctamente.')
             return redirect('home')
     else:
         form = PacienteForm(instance=paciente)
     return render(request, 'AppConsulta/agregar_paciente.html', {'form': form})
 
+@login_required
 def eliminar_paciente(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.delete()
+    messages.success(request, 'Paciente eliminado exitosamente.')
     return redirect('home')
 
-
-# CRUD: Medico
+# CRUD: Médico
+@login_required
 def agregar_medico(request):
-    """
-    Vista para agregar un nuevo médico con mensaje de confirmación.
-    """
     if request.method == 'POST':
         form = MedicoForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Médico guardado exitosamente.')  # Mensaje de éxito
+            messages.success(request, 'Médico guardado exitosamente.')
             return redirect('agregar_medico')
     else:
         form = MedicoForm()
     return render(request, 'AppConsulta/agregar_medico.html', {'form': form})
 
-
+@login_required
 def editar_medico(request, pk):
     medico = get_object_or_404(Medico, pk=pk)
     if request.method == 'POST':
         form = MedicoForm(request.POST, instance=medico)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Médico actualizado correctamente.')
             return redirect('home')
     else:
         form = MedicoForm(instance=medico)
     return render(request, 'AppConsulta/agregar_medico.html', {'form': form})
 
+@login_required
 def eliminar_medico(request, pk):
     medico = get_object_or_404(Medico, pk=pk)
     medico.delete()
+    messages.success(request, 'Médico eliminado exitosamente.')
     return redirect('home')
 
-
 # CRUD: Consulta
+@login_required
 def agregar_consulta(request):
-    """
-    Vista para agregar una nueva consulta con la hora detectada automáticamente.
-    """
     if request.method == 'POST':
         form = ConsultaForm(request.POST)
         if form.is_valid():
-            consulta = form.save(commit=False)  # Crear consulta sin guardarla aún
-            consulta.fecha_consulta = now()  # Asignar la fecha y hora actual automáticamente
-            consulta.save()  # Guardar la consulta
-            messages.success(request, 'Consulta guardada exitosamente con la fecha y hora actuales.')
+            consulta = form.save(commit=False)
+            consulta.fecha_consulta = now()
+            consulta.save()
+            messages.success(request, 'Consulta guardada exitosamente.')
             return redirect('agregar_consulta')
     else:
         form = ConsultaForm()
-
     return render(request, 'AppConsulta/agregar_consulta.html', {'form': form})
 
+@login_required
 def editar_consulta(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     if request.method == 'POST':
         form = ConsultaForm(request.POST, instance=consulta)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Consulta actualizada correctamente.')
             return redirect('home')
     else:
         form = ConsultaForm(instance=consulta)
     return render(request, 'AppConsulta/agregar_consulta.html', {'form': form})
 
+@login_required
 def eliminar_consulta(request, pk):
     consulta = get_object_or_404(Consulta, pk=pk)
     consulta.delete()
+    messages.success(request, 'Consulta eliminada exitosamente.')
     return redirect('home')
 
-
-# VISTA: buscar_consulta
+# VISTA: Buscar Consulta
+@login_required
 def buscar_consulta(request):
     consultas = None
     if 'rut' in request.GET:
@@ -142,5 +149,26 @@ def buscar_consulta(request):
             paciente = Paciente.objects.get(rut=rut)
             consultas = Consulta.objects.filter(paciente=paciente)
         except Paciente.DoesNotExist:
-            consultas = []
+            messages.error(request, 'No se encontró un paciente con ese RUT.')
     return render(request, 'AppConsulta/buscar_consulta.html', {'consultas': consultas})
+
+# Vista de Registro
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Usuario registrado exitosamente.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Error al registrar el usuario.')
+    else:
+        form = UserCreationForm()
+    return render(request, 'AppConsulta/register.html', {'form': form})
+
+# Vista Personalizada de Logout
+def custom_logout(request):
+    logout(request)
+    messages.success(request, 'Sesión cerrada correctamente.')
+    return redirect('login')

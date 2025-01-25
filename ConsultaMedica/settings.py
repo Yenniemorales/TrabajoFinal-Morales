@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'AppConsulta',
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'ConsultaMedica.urls'
 
@@ -123,3 +123,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración de login/logout
+LOGIN_URL = '/login/'  # Redirige al login si el usuario no está autenticado
+LOGIN_REDIRECT_URL = '/'  # Redirige al home después del login
+LOGOUT_REDIRECT_URL = '/login/'  # Redirige al login después del logout
