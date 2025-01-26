@@ -6,7 +6,6 @@ from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
-from django.contrib.auth.views import LoginView, LogoutView
 
 # VISTA: Home
 @login_required
@@ -149,26 +148,41 @@ def buscar_consulta(request):
             paciente = Paciente.objects.get(rut=rut)
             consultas = Consulta.objects.filter(paciente=paciente)
         except Paciente.DoesNotExist:
-            messages.error(request, 'No se encontró un paciente con ese RUT.')
+            messages.error(request, 'No se encontró un paciente con ese RUT.', extra_tags='buscar_consulta')
     return render(request, 'AppConsulta/buscar_consulta.html', {'consultas': consultas})
 
 # Vista de Registro
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Usuario registrado exitosamente.')
-            return redirect('home')
-        else:
-            messages.error(request, 'Error al registrar el usuario.')
-    else:
-        form = UserCreationForm()
-    return render(request, 'AppConsulta/register.html', {'form': form})
+@login_required
+def buscar_consulta(request):
+    consultas = None
+    if 'rut' in request.GET:  # Verifica si se envió el formulario
+        rut = request.GET['rut']
+        try:
+            # Busca al paciente por RUT
+            paciente = Paciente.objects.get(rut=rut)
+            # Recupera las consultas relacionadas con el paciente
+            consultas = Consulta.objects.filter(paciente=paciente)
+        except Paciente.DoesNotExist:
+            # Agrega un mensaje de error si no se encuentra el paciente
+            messages.error(request, 'No se encontró un paciente con ese RUT.')
+    return render(request, 'AppConsulta/buscar_consulta.html', {'consultas': consultas})
+
 
 # Vista Personalizada de Logout
 def custom_logout(request):
     logout(request)
     messages.success(request, 'Sesión cerrada correctamente.')
     return redirect('login')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Inicia sesión automáticamente después de registrar
+            messages.success(request, '¡Registro exitoso! Bienvenido.')
+            return redirect('home')  
+    else:
+        form = UserCreationForm()
+    return render(request, 'AppConsulta/register.html', {'form': form})

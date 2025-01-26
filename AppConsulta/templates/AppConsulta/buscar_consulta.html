@@ -7,44 +7,49 @@
 
     <!-- Formulario de búsqueda por RUT -->
     <form method="get" class="row g-3 needs-validation" novalidate>
-
         <div class="col-md-12">
-            <!-- Etiqueta y campo de texto para RUT -->
             <label for="id_rut" class="form-label">RUT del Paciente a Buscar</label>
-            <input type="text" class="form-control" id="id_rut" name="rut" placeholder="Ej: 11111111-1 (sin puntos con guión)">
+            <input type="text" class="form-control" id="id_rut" name="rut" 
+                   placeholder="Ej: 11111111-1 (sin puntos con guión)"
+                   value="{{ request.GET.rut }}">
         </div>
         <div class="col-12">
-            <!-- Botón para enviar la búsqueda -->
             <button type="submit" class="btn btn-primary">Buscar</button>
         </div>
     </form>
 
+    <!-- Mostrar mensajes de error -->
+    {% if messages %}
     <div class="mt-4">
-        <!-- Título para mostrar resultados de la búsqueda -->
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Mostrar resultados de búsqueda -->
+    <div class="mt-4">
         <h3>Resultados de la Búsqueda</h3>
 
         {% if consultas %}
             <ul class="list-group">
-
                 {% for consulta in consultas %}
                 <li class="list-group-item">
-
                     <strong>Paciente:</strong> {{ consulta.paciente }}<br>
                     <strong>Médico:</strong> {{ consulta.medico }}<br>
-                    <!-- Ajusta según el campo de fecha en tu modelo (ej: fecha_consulta) -->
-                    <strong>Fecha:</strong> {{ consulta.fecha_consulta|date:"d-m-Y" }}<br> <!-- Aquí aplicamos el filtro -->
+                    <strong>Fecha:</strong> {{ consulta.fecha_consulta|date:"d-m-Y" }}<br>
                     <strong>Motivo:</strong> {{ consulta.motivo }}
                 </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <!-- Si no hay resultados o no se buscó nada, muestra este mensaje -->
             <p>No se encontraron resultados.</p>
         {% endif %}
     </div>
 
     <div class="mt-3">
-        <!-- Botón para volver a la página principal -->
         <a href="/" class="btn btn-secondary">Inicio</a>
     </div>
 </div>

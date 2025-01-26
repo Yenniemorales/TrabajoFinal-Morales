@@ -64,8 +64,14 @@
                     <td>{{ paciente.rut }}</td>
                     <td>{{ paciente.email }}</td>
                     <td>
-                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'eliminar_paciente' paciente.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <!-- Botones eliminar y editar -->
+                        a hr<ef="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">ditar</a>
+                        <a href="{% url 'eliminar_paciente' paciente.id %}" 
+                            class="btn btn-danger btn-sm" 
+                            onclick="confirmDeletion(event, this)">
+                            Eliminar
+                            </a>
+
                     </td>
                 </tr>
                 {% endfor %}
@@ -94,8 +100,13 @@
                     <td>{{ medico.especialidad }}</td>
                     <td>{{ medico.email }}</td>
                     <td>
+                        <!-- Botones editar y eliminar -->
                         <a href="{% url 'editar_medico' medico.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'eliminar_medico' medico.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="{% url 'eliminar_medico' medico.id %}" 
+                            class="btn btn-danger btn-sm" 
+                            onclick="confirmDeletion(event, this)">
+                            Eliminar
+                            </a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -124,8 +135,13 @@
                     <td>{{ consulta.fecha_consulta }}</td>
                     <td>{{ consulta.motivo }}</td>
                     <td>
+                        <!-- Botones editar y eliminar -->
                         <a href="{% url 'editar_consulta' consulta.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'eliminar_consulta' consulta.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="{% url 'eliminar_consulta' consulta.id %}" 
+                            class="btn btn-danger btn-sm" 
+                            onclick="confirmDeletion(event, this)">
+                            Eliminar
+                            </a>
                     </td>
                 </tr>
                 {% endfor %}
