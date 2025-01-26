@@ -94,9 +94,6 @@ class UserEditForm(UserChangeForm):
         }
 
     def clean(self):
-        """
-        Validación adicional en el formulario para asegurar que las contraseñas coincidan.
-        """
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
@@ -104,4 +101,3 @@ class UserEditForm(UserChangeForm):
         if password1 and password1 != password2:
             self.add_error('password2', "Las contraseñas no coinciden.")
         return cleaned_data
-

@@ -6,8 +6,7 @@ from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
-
+from .forms import UserEditForm
 
 # VISTA: Home
 @login_required
@@ -177,22 +176,22 @@ def register(request):
     
     return render(request, 'AppConsulta/register.html', {'form': form})
 
-# Vista Personalizada de Editar Perfil
+
 @login_required
 def editar_perfil(request):
     usuario = request.user  # Obtiene el usuario autenticado
 
     if request.method == 'POST':
-        # Formulario relacionado con el usuario actual
         miFormulario = UserEditForm(request.POST, instance=usuario)
 
         if miFormulario.is_valid():
             informacion = miFormulario.cleaned_data
 
             # Actualizar datos del usuario
-            usuario.email = informacion['email']
+            
             usuario.first_name = informacion['first_name']
             usuario.last_name = informacion['last_name']
+            usuario.email = informacion['email']
 
             # Cambiar contraseña si ambas coinciden y no están vacías
             if informacion.get('password1') and informacion['password1'] == informacion['password2']:
@@ -203,12 +202,10 @@ def editar_perfil(request):
 
             usuario.save()  # Guarda los cambios
             messages.success(request, 'Perfil actualizado correctamente.')
-            return redirect('home')  # Redirige al inicio
+            #return redirect('home')
         else:
-            # Si hay errores, muestra mensajes
             messages.error(request, 'Por favor, corrija los errores del formulario.')
     else:
-        # Carga el formulario con datos actuales del usuario
         miFormulario = UserEditForm(instance=usuario)
 
     return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
