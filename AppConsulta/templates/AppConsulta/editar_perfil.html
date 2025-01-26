@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow-lg p-5 rounded" style="width: 40rem; background-color: #f8f9fa;">
-        <h2 class="text-center mb-4 text-primary ">Editar Perfil</h2>
+    <div class="card shadow-lg p-3 rounded" style="width: 40rem; background-color: #f8f9fa;"> <!-- Reducido el ancho -->
+        <h3 class="text-center mb-3 text-primary">Editar Perfil</h3> <!-- Título reducido -->
 
         <!-- Mensajes de error o éxito -->
         {% if messages %}
@@ -20,48 +20,48 @@
         {% endif %}
 
         <!-- Formulario -->
-        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row g-4">
+            <div class="row g-2"> <!-- Reducido el espacio entre elementos -->
                 <!-- Información personal -->
-                <div class="col-md-12">
+                <div class="col-12">
                     <label for="id_email" class="form-label fw-bold">Correo Electrónico</label>
                     {{ user_form.email }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <label for="id_first_name" class="form-label fw-bold">Nombre</label>
                     {{ user_form.first_name }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <label for="id_last_name" class="form-label fw-bold">Apellido</label>
                     {{ user_form.last_name }}
                 </div>
 
                 <!-- Contraseña -->
-                <div class="col-md-6">
+                <div class="col-6">
                     <label for="id_password1" class="form-label fw-bold">Nueva Contraseña</label>
                     {{ user_form.password1 }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <label for="id_password2" class="form-label fw-bold">Confirmar Contraseña</label>
                     {{ user_form.password2 }}
                 </div>
 
                 <!-- Avatar -->
-                <div class="col-md-12 text-center">
-                    <label class="form-label fw-bold">Avatar Actual</label><br>
-                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="rounded-circle mb-3" style="width: 120px; height: 120px; border: 3px solid #007bff;">
+                <div class="col-12 text-center">
+                    <label class="form-label fw-bold">Avatar</label><br>
+                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="rounded-circle mb-3" style="width: 150px; height: 150px; border: 2px solid #007bff;">
                 </div>
-                <div class="col-md-12">
-                    <label for="id_avatar" class="form-label fw-bold">Actualizar Avatar</label>
+                <div class="col-12">
+                    <label for="id_avatar" class="form-label"> </label>
                     {{ profile_form.avatar }}
                 </div>
             </div>
 
             <!-- Botones -->
-            <div class="d-grid gap-2 mt-4">
-                <button type="submit" class="btn btn-primary btn-lg ">Guardar Cambios</button>
-                <a href="{% url 'home' %}" class="btn btn-secondary btn-lg ">Cancelar</a>
+            <div class="d-grid gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>
