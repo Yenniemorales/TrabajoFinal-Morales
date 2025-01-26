@@ -4,8 +4,8 @@ from .models import Paciente, Medico, Consulta
 from django.contrib import messages  # Sistema de mensajes
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
-from .forms import CustomUserCreationForm
+from django.contrib.auth import  logout
+from django.contrib.auth.forms import UserCreationForm
 # VISTA: Home
 @login_required
 def home(request):
@@ -176,14 +176,14 @@ def custom_logout(request):
 
 def register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
+            form.save()
             messages.success(request, 'Usuario registrado exitosamente.')
-            return redirect('home')
+            form = UserCreationForm()  # Generar un formulario vacío tras el registro
         else:
-            messages.error(request, 'Por favor, corrija los errores en el formulario.')
+            messages.error(request, 'Hubo un error al registrar el usuario. Verifica los datos ingresados.')
     else:
-        form = CustomUserCreationForm()
+        form = UserCreationForm()
+    
     return render(request, 'AppConsulta/register.html', {'form': form})

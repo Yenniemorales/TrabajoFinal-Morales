@@ -13,7 +13,7 @@
     <style>
         body {
             background-color: #f4f6f9;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         .card {
             border-radius: 15px;
@@ -26,11 +26,14 @@
             font-size: 1.5rem;
             font-weight: bold;
             text-align: center;
+            border-radius: 15px 15px 0 0;
         }
         .btn-primary {
             background-color: #007bff;
             border: none;
             border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
             transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
@@ -44,9 +47,6 @@
             border-radius: 10px;
             border: 1px solid #ccc;
         }
-        .text-muted {
-            font-size: 0.9rem;
-        }
         .alert {
             font-size: 0.9rem;
         }
@@ -57,11 +57,10 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">
-                        Registrar Usuario
-                    </div>
+                    <div class="card-header">Registrar Usuario</div>
                     <div class="card-body">
-                        <!-- Mensajes -->
+
+                        <!-- Mostrar mensajes de alerta -->
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -71,20 +70,22 @@
                             {% endfor %}
                         {% endif %}
 
-                        <!-- Formulario -->
+
                         <form method="post" action="{% url 'register' %}">
                             {% csrf_token %}
+
                             <!-- Nombre de usuario -->
                             <div class="mb-3">
                                 <label for="id_username" class="form-label">Nombre de usuario:</label>
-                                {{ form.username }}
+                                <input type="text" name="username" id="id_username" class="form-control" placeholder="Escribe tu nombre de usuario" required>
                             </div>
-                                
+
                             <!-- Correo electrónico -->
                             <div class="mb-3">
                                 <label for="id_email" class="form-label">Correo electrónico:</label>
-                                {{ form.email }}
+                                <input type="email" name="email" id="id_email" class="form-control" placeholder="Ingresa tu correo electrónico" required>
                             </div>
+
                             <!-- Contraseña -->
                             <div class="mb-3">
                                 <label for="id_password1" class="form-label">Contraseña:</label>
@@ -96,20 +97,20 @@
                                     <li>No puede ser completamente numérica.</li>
                                 </ul>
                             </div>
+
                             <!-- Confirmar contraseña -->
                             <div class="mb-3">
                                 <label for="id_password2" class="form-label">Confirmar contraseña:</label>
                                 <input type="password" name="password2" id="id_password2" class="form-control" placeholder="Confirma tu contraseña" required>
-                                <small class="text-muted">Asegúrate de que coincida con la contraseña ingresada anteriormente.</small>
                             </div>
-                            <div class="d-grid gap-2">
+
+                            <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
                             </div>
                         </form>
 
-                        <!-- Enlace para iniciar sesión -->
                         <div class="text-center mt-3">
-                            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="footer-link">Inicia sesión aquí</a></p>
+                            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
                         </div>
                     </div>
                 </div>
@@ -118,3 +119,4 @@
     </div>
 </body>
 </html>
+
