@@ -4,9 +4,8 @@ from .models import Paciente, Medico, Consulta
 from django.contrib import messages  # Sistema de mensajes
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
-
+from .forms import CustomUserCreationForm
 # VISTA: Home
 @login_required
 def home(request):
@@ -177,12 +176,14 @@ def custom_logout(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Inicia sesión automáticamente después de registrar
-            messages.success(request, '¡Registro exitoso! Bienvenido.')
-            return redirect('home')  
+            login(request, user)
+            messages.success(request, 'Usuario registrado exitosamente.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Por favor, corrija los errores en el formulario.')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'AppConsulta/register.html', {'form': form})

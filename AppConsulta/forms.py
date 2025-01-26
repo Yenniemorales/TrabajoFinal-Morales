@@ -1,5 +1,7 @@
 from django import forms
 from .models import Paciente, Medico, Consulta
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 # Creo formulario de Paciente
 class PacienteForm(forms.ModelForm):
@@ -47,3 +49,23 @@ class ConsultaForm(forms.ModelForm):
                 'placeholder': 'Ingrese el motivo de la consulta'
             }),
         }
+
+
+# Formulario de Registro
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo electrónico'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe tu nombre de usuario'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Escribe una contraseña segura'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirma tu contraseña'}),
+        }
+
+
