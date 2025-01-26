@@ -1,7 +1,8 @@
 from django import forms
-from .models import Paciente, Medico, Consulta
+from .models import Paciente, Medico, Consulta, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 
 # Creo formulario de Paciente
 class PacienteForm(forms.ModelForm):
@@ -101,3 +102,27 @@ class UserEditForm(UserChangeForm):
         if password1 and password1 != password2:
             self.add_error('password2', "Las contraseñas no coinciden.")
         return cleaned_data
+
+
+# Formulario de edición de perfil
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            # Crear el perfil al registrar un usuario
+            Profile.objects.create(user=user)
+        return user
+
+
+# Imagen
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar']

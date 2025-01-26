@@ -6,8 +6,7 @@ from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import UserEditForm
-
+from .forms import UserEditForm, ProfileEditForm
 # VISTA: Home
 @login_required
 def home(request):
@@ -161,7 +160,7 @@ def custom_logout(request):
     logout(request)
     return redirect('login')
 
-
+# Vista Personalizada de Registro
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -209,3 +208,30 @@ def editar_perfil(request):
         miFormulario = UserEditForm(instance=usuario)
 
     return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
+
+@login_required
+def editarPerfil(request):
+    usuario = request.user
+    try:
+        perfil = usuario.profile
+    except Profile.DoesNotExist:
+        perfil = Profile.objects.create(user=usuario)
+
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST, instance=usuario)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=perfil)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Perfil actualizado correctamente.')
+            return redirect('base')
+    else:
+        user_form = UserEditForm(instance=usuario)
+        profile_form = ProfileEditForm(instance=perfil)
+
+    return render(request, "AppConsulta/editar_perfil.html", {
+        "user_form": user_form,
+        "profile_form": profile_form,
+        "usuario": usuario
+    })

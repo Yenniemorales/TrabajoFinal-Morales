@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.timezone import make_aware
+from django.contrib.auth.models import User
 
 # Modelo para la clase Paciente
 class Paciente(models.Model):
@@ -60,3 +61,12 @@ class Consulta(models.Model):
 
     def __str__(self):
         return f"Consulta de {self.paciente} con {self.medico} el {self.fecha_consulta.strftime('%d/%m/%Y')}"
+
+# Imagen 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/ozzy.png')
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
