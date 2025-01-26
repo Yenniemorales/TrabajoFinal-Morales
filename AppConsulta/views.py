@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import PacienteForm, MedicoForm, ConsultaForm
+from .forms import *
 from .models import Paciente, Medico, Consulta
 from django.contrib import messages  # Sistema de mensajes
 from django.utils.timezone import now
@@ -144,19 +144,6 @@ def eliminar_consulta(request, pk):
 @login_required
 def buscar_consulta(request):
     consultas = None
-    if 'rut' in request.GET:
-        rut = request.GET['rut']
-        try:
-            paciente = Paciente.objects.get(rut=rut)
-            consultas = Consulta.objects.filter(paciente=paciente)
-        except Paciente.DoesNotExist:
-            messages.error(request, 'No se encontró un paciente con ese RUT.', extra_tags='buscar_consulta')
-    return render(request, 'AppConsulta/buscar_consulta.html', {'consultas': consultas})
-
-# Vista de Registro
-@login_required
-def buscar_consulta(request):
-    consultas = None
     if 'rut' in request.GET:  # Verifica si se envió el formulario
         rut = request.GET['rut']
         try:
@@ -173,7 +160,6 @@ def buscar_consulta(request):
 # Vista Personalizada de Logout
 def custom_logout(request):
     logout(request)
-    messages.success(request, 'Sesión cerrada correctamente.')
     return redirect('login')
 
 
@@ -190,3 +176,39 @@ def register(request):
         form = UserCreationForm()
     
     return render(request, 'AppConsulta/register.html', {'form': form})
+
+# Vista Personalizada de Editar Perfil
+@login_required
+def editar_perfil(request):
+    usuario = request.user  # Obtiene el usuario autenticado
+
+    if request.method == 'POST':
+        # Formulario relacionado con el usuario actual
+        miFormulario = UserEditForm(request.POST, instance=usuario)
+
+        if miFormulario.is_valid():
+            informacion = miFormulario.cleaned_data
+
+            # Actualizar datos del usuario
+            usuario.email = informacion['email']
+            usuario.first_name = informacion['first_name']
+            usuario.last_name = informacion['last_name']
+
+            # Cambiar contraseña si ambas coinciden y no están vacías
+            if informacion.get('password1') and informacion['password1'] == informacion['password2']:
+                usuario.set_password(informacion['password1'])
+            elif informacion.get('password1') and informacion['password1'] != informacion['password2']:
+                messages.error(request, 'Las contraseñas no coinciden.')
+                return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
+
+            usuario.save()  # Guarda los cambios
+            messages.success(request, 'Perfil actualizado correctamente.')
+            return redirect('home')  # Redirige al inicio
+        else:
+            # Si hay errores, muestra mensajes
+            messages.error(request, 'Por favor, corrija los errores del formulario.')
+    else:
+        # Carga el formulario con datos actuales del usuario
+        miFormulario = UserEditForm(instance=usuario)
+
+    return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})

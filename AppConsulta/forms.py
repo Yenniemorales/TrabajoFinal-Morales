@@ -1,7 +1,7 @@
 from django import forms
 from .models import Paciente, Medico, Consulta
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 # Creo formulario de Paciente
 class PacienteForm(forms.ModelForm):
@@ -17,6 +17,7 @@ class PacienteForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico'}),
         }
 
+
 # Creo formulario de Médico
 class MedicoForm(forms.ModelForm):
     class Meta:
@@ -30,6 +31,7 @@ class MedicoForm(forms.ModelForm):
             'especialidad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la especialidad'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el correo electrónico'}),
         }
+
 
 # Formulario de Consulta
 class ConsultaForm(forms.ModelForm):
@@ -68,4 +70,38 @@ class CustomUserCreationForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirma tu contraseña'}),
         }
 
+
+# Formulario de edición de perfil
+class UserEditForm(UserChangeForm):
+    password1 = forms.CharField(
+        label='Nueva contraseña',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese nueva contraseña'}),
+        required=False
+    )
+    password2 = forms.CharField(
+        label='Confirmar contraseña',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme nueva contraseña'}),
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo electrónico'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su nombre'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su apellido'}),
+        }
+
+    def clean(self):
+        """
+        Validación adicional en el formulario para asegurar que las contraseñas coincidan.
+        """
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        if password1 and password1 != password2:
+            self.add_error('password2', "Las contraseñas no coinciden.")
+        return cleaned_data
 
