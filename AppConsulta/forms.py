@@ -121,7 +121,7 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
-# Imagen
+# Formulario de edición de perfil
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile

@@ -209,29 +209,29 @@ def editar_perfil(request):
 
     return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
 
+# Vista para editar el perfil
 @login_required
-def editarPerfil(request):
+def editar_perfil(request):
     usuario = request.user
     try:
-        perfil = usuario.profile
+        perfil = Profile.objects.get(user=usuario)
     except Profile.DoesNotExist:
         perfil = Profile.objects.create(user=usuario)
 
     if request.method == 'POST':
         user_form = UserEditForm(request.POST, instance=usuario)
-        profile_form = ProfileEditForm(request.POST, request.FILES, instance=perfil)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=perfil)  # Maneja archivos
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, 'Perfil actualizado correctamente.')
-            return redirect('base')
+            return redirect('home')  # Cambia según la URL de tu home
     else:
         user_form = UserEditForm(instance=usuario)
         profile_form = ProfileEditForm(instance=perfil)
 
     return render(request, "AppConsulta/editar_perfil.html", {
         "user_form": user_form,
-        "profile_form": profile_form,
-        "usuario": usuario
+        "profile_form": profile_form
     })
