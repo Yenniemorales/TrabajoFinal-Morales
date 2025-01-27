@@ -29,22 +29,25 @@ class Medico(models.Model):
         return f"Dr./Dra. {self.nombre} {self.apellido} ({self.especialidad}) - {self.rut}"
 
 # Modelo para la clase Consulta
+from django.utils.timezone import now
+
 class Consulta(models.Model):
-    # El campo paciente se relaciona con la clase Paciente
     paciente = models.ForeignKey(
         Paciente,
         on_delete=models.CASCADE,
         help_text="Paciente relacionado con la consulta"
     )
-
-    # El campo medico se relaciona con la clase Medico
     medico = models.ForeignKey(
         Medico,
         on_delete=models.CASCADE,
         help_text="Médico relacionado con la consulta"
     )
-    fecha_consulta = models.DateTimeField(help_text="Fecha y hora de la consulta")
+    fecha_consulta = models.DateTimeField(
+        default=now,
+        help_text="Fecha y hora de la consulta"
+    )
     motivo = models.TextField(help_text="Motivo de la consulta")
+
 
 # Validación personalizada para la fecha de la consulta
     def clean(self):
