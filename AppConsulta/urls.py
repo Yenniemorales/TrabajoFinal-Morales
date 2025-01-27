@@ -9,7 +9,6 @@ urlpatterns = [
     # Ruta para editar perfil
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
 
-
     # CRUD: Pacientes
     path('agregar_paciente/', views.agregar_paciente, name='agregar_paciente'),
     path('editar_paciente/<int:pk>/', views.editar_paciente, name='editar_paciente'),
@@ -34,4 +33,7 @@ urlpatterns = [
 
     # Login
     path('login/', auth_views.LoginView.as_view(template_name='AppConsulta/login.html'), name='login'),
+
+    # Ruta About
+    path('about/', views.about, name='about'),  # Nueva ruta para "about"
 ]

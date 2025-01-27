@@ -43,7 +43,6 @@ class Consulta(models.Model):
         on_delete=models.CASCADE,
         help_text="Médico relacionado con la consulta"
     )
-    # El campo fecha_consulta lo que hace es almacenar la fecha y hora de la consulta
     fecha_consulta = models.DateTimeField(help_text="Fecha y hora de la consulta")
     motivo = models.TextField(help_text="Motivo de la consulta")
 

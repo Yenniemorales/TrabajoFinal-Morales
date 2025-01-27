@@ -17,7 +17,6 @@
             font-weight: bold;
         }
 
-        /* Asegura que el enlace activo mantenga el mismo tamaño */
         .nav-link.active {
             font-size: 18px;
             font-weight: bold;
@@ -40,7 +39,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- Mostrar diferentes opciones según si el usuario está autenticado -->
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Inicio</a>
@@ -57,13 +55,16 @@
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'buscar_consulta' %}active{% endif %}" href="{% url 'buscar_consulta' %}">Buscar Consulta</a>
                         </li>
-                        <!-- AVATAR -->
+                        <!-- Nueva ruta about -->
                         <li class="nav-item">
-                            <img src="{{ user.profile.avatar.url|default:"/media/avatars/ozzy.png" }}" alt="Avatar"  class="rounded-circle" width="40" 
-                            height="40">
+                        <a class="nav-link text-light {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">Acerca de</a>
+                    </li>
+                        <li class="nav-item">
+                            <img src="{{ user.profile.avatar.url|default:'/media/avatars/ozzy.png' }}" alt="Avatar" class="rounded-circle" width="40" height="40">
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'editar_perfil' %}active{% endif %}" href="{% url 'editar_perfil' %}">Editar Perfil</a>
+                        </li>
                         <li class="nav-item">
                             <form method="post" action="{% url 'logout' %}" style="display: inline;">
                                 {% csrf_token %}
@@ -78,6 +79,7 @@
                             <a class="nav-link text-light {% if request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Registrarse</a>
                         </li>
                     {% endif %}
+                    
                 </ul>
             </div>
         </div>
@@ -92,7 +94,7 @@
     <!-- Script para confirmar eliminación -->
     <script>
         function confirmDeletion(event, element) {
-            event.preventDefault(); // Evita que el enlace se ejecute de inmediato
+            event.preventDefault();
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡Esta acción no se puede deshacer!",
@@ -104,7 +106,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = element.href; // Redirige al enlace de eliminación
+                    window.location.href = element.href;
                 }
             });
         }

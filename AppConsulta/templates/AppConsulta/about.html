@@ -1,0 +1,39 @@
+{% extends "AppConsulta/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Encabezado -->
+    <div class="text-center mb-5">
+        <h2 class="text-primary fw-bold display-5">Acerca de la Aplicación</h2>
+        <p class="text-secondary mt-3 fs-5">{{ info }}</p>
+    </div>
+<!-- Características Principales -->
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        <div class="p-4 border rounded-3 shadow-sm bg-light">
+            <h3 class="text-center text-primary mb-4">Características Principales</h3>
+            <ul class="ps-4">
+                {% for feature in features %}
+                <li class="mb-2 fs-5 text-dark">
+                    {{ feature }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Equipo de Desarrollo -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h4 class="text-secondary fw-bold">Equipo de Desarrollo</h4>
+                    <p class="text-muted mt-2 fs-5">{{ team }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

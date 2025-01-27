@@ -57,8 +57,8 @@ ROOT_URLCONF = 'ConsultaMedica.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / "templates"],  # Aquí se buscan plantillas globales
+        'APP_DIRS': True,  # Habilita la búsqueda en carpetas `templates/` de las apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

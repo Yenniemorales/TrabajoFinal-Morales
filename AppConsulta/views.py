@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserEditForm, ProfileEditForm
+
 # VISTA: Home
 @login_required
 def home(request):
@@ -235,3 +236,18 @@ def editar_perfil(request):
         "user_form": user_form,
         "profile_form": profile_form
     })
+
+def about(request):
+    context = {
+        'info': 'Esta aplicación está diseñada para gestionar pacientes, médicos y consultas de manera eficiente.',
+        'features': [
+            'Registro y administración de pacientes.',
+            'Gestión de médicos y especialidades.',
+            'Agendamiento y búsqueda de consultas.',
+            'Registro y autenticación de usuarios.',
+            'Edición de perfiles con avatares personalizados.'
+        ],
+        'team': 'Este proyecto fue desarrollado por Yennie Morales.',
+        'score_range': range(5),  # Por ejemplo, un rango de 0 a 4
+    }
+    return render(request, 'AppConsulta/about.html', context)
