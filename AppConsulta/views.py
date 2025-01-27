@@ -120,17 +120,19 @@ def agregar_consulta(request):
     return render(request, 'AppConsulta/agregar_consulta.html', {'form': form})
 
 @login_required
-def editar_consulta(request, pk):
-    consulta = get_object_or_404(Consulta, pk=pk)
+
+def editar_consulta(request, consulta_id):  # Usando 'consulta_id'
+    consulta = get_object_or_404(Consulta, id=consulta_id)
     if request.method == 'POST':
         form = ConsultaForm(request.POST, instance=consulta)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Consulta actualizada correctamente.')
-            return redirect('home')
+            form.save()  # Guarda los cambios
+            messages.success(request, "Consulta actualizada exitosamente.")
+            return redirect('home')  # Cambia 'home' por tu ruta de redirección si es necesario
     else:
-        form = ConsultaForm(instance=consulta)
-    return render(request, 'AppConsulta/agregar_consulta.html', {'form': form})
+        form = ConsultaForm(instance=consulta)  # Prellena el formulario con los datos actuales de la consulta
+
+    return render(request, 'AppConsulta/editar_consulta.html', {'form': form, 'consulta': consulta})
 
 @login_required
 def eliminar_consulta(request, pk):

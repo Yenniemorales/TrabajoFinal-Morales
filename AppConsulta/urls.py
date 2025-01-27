@@ -8,6 +8,8 @@ urlpatterns = [
 
     # Ruta para editar perfil
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
+    path('editar_consulta/<int:consulta_id>/', views.editar_consulta, name='editar_consulta'),
+
 
     # CRUD: Pacientes
     path('agregar_paciente/', views.agregar_paciente, name='agregar_paciente'),
