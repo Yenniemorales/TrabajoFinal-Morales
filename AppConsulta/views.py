@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserEditForm, ProfileEditForm
+from django.contrib.auth import update_session_auth_hash
 
 # VISTA: Home
 @login_required
@@ -180,37 +181,6 @@ def register(request):
 
 
 @login_required
-def editar_perfil(request):
-    usuario = request.user  # Obtiene el usuario autenticado
-
-    if request.method == 'POST':
-        miFormulario = UserEditForm(request.POST, instance=usuario)
-
-        if miFormulario.is_valid():
-            informacion = miFormulario.cleaned_data
-
-            # Actualizar datos del usuario
-            
-            usuario.first_name = informacion['first_name']
-            usuario.last_name = informacion['last_name']
-            usuario.email = informacion['email']
-
-            # Cambiar contraseña si ambas coinciden y no están vacías
-            if informacion.get('password1') and informacion['password1'] == informacion['password2']:
-                usuario.set_password(informacion['password1'])
-            elif informacion.get('password1') and informacion['password1'] != informacion['password2']:
-                messages.error(request, 'Las contraseñas no coinciden.')
-                return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
-
-            usuario.save()  # Guarda los cambios
-            messages.success(request, 'Perfil actualizado correctamente.')
-            #return redirect('home')
-        else:
-            messages.error(request, 'Por favor, corrija los errores del formulario.')
-    else:
-        miFormulario = UserEditForm(instance=usuario)
-
-    return render(request, 'AppConsulta/editar_perfil.html', {"miFormulario": miFormulario})
 
 # Vista para editar el perfil
 @login_required
@@ -222,15 +192,39 @@ def editar_perfil(request):
         perfil = Profile.objects.create(user=usuario)
 
     if request.method == 'POST':
+        # Formularios para editar usuario y perfil
         user_form = UserEditForm(request.POST, instance=usuario)
-        profile_form = ProfileEditForm(request.POST, request.FILES, instance=perfil)  # Maneja archivos
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=perfil)
 
         if user_form.is_valid() and profile_form.is_valid():
+            informacion = user_form.cleaned_data
+            
+            # Guardar datos de perfil y usuario
             user_form.save()
             profile_form.save()
+
+            # Cambiar contraseña si se proporciona y ambas coinciden
+            password1 = informacion.get('password1')
+            password2 = informacion.get('password2')
+            if password1 and password1 == password2:
+                usuario.set_password(password1)
+                usuario.save()
+                # Mantener al usuario autenticado tras el cambio de contraseña
+                update_session_auth_hash(request, usuario)
+                messages.success(request, 'Perfil y contraseña actualizados correctamente.')
+            elif password1 and password1 != password2:
+                messages.error(request, 'Las contraseñas no coinciden.')
+                return render(request, "AppConsulta/editar_perfil.html", {
+                    "user_form": user_form,
+                    "profile_form": profile_form
+                })
+
             messages.success(request, 'Perfil actualizado correctamente.')
             return redirect('home')  # Cambia según la URL de tu home
+        else:
+            messages.error(request, 'Por favor, corrija los errores del formulario.')
     else:
+        # Cargar los formularios con datos existentes
         user_form = UserEditForm(instance=usuario)
         profile_form = ProfileEditForm(instance=perfil)
 
@@ -238,7 +232,6 @@ def editar_perfil(request):
         "user_form": user_form,
         "profile_form": profile_form
     })
-
 def about(request):
     context = {
         'info': 'Esta aplicación está diseñada para gestionar pacientes, médicos y consultas de manera eficiente.',
