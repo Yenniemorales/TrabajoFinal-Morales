@@ -1,9 +1,9 @@
 {% extends "AppConsulta/base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center text-primary">Editar Consulta</h2>
-    <form method="post" class="mt-4">
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+    <h2 class="text-center text-primary mb-4">Editar Consulta</h2>
+    <form method="post" class="w-50">
         {% csrf_token %}
         <div class="row mb-3">
             <div class="col-md-6">
@@ -23,7 +23,11 @@
             <label for="id_motivo" class="form-label">Motivo</label>
             {{ form.motivo }}
         </div>
-        <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
+        <!-- Contenedor centrado para los botones -->
+        <div class="d-flex flex-column align-items-center mt-4">
+            <button type="submit" class="btn btn-primary w-20 mb-3">Guardar cambios</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary w-20">Inicio</a>
+        </div>
     </form>
 </div>
 {% endblock %}
